@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/images/aphantocosm.ico" type="image/x-icon"/>
+  <link href="/css/fontawesome.css" rel="stylesheet" />
+  <link href="/css/brands.css" rel="stylesheet" />
+  <link href="/css/solid.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/dashboard.css" />
+  <title>Aphantocosm - Login</title>
+</head>
+<body>
+  <div class="stars"></div>
+  <div class="twinkling"></div>
+  <div class="clouds"></div>
+    <div class="login-form">
+        <div class="login">
+            <% if (errors) { %>
+              <div style="color: red;">
+                <ul>
+                  <% errors.forEach(error => { %>
+                    <li><%= error.msg %></li>
+                  <% }); %>
+                </ul>
+              </div>
+            <% } %>
+            <h2>Sign In</h2>
+            <form action="/login" method="post">
+              <div class="inputbox">
+                  <input type="text" placeholder="Username" name="username" required>
+              </div>
+
+              <div class="inputbox">
+                <div class="password-container">
+                  <input id="password" type="password" placeholder="Password" name="password" required>
+                  <span id="toggle-password" class="toggle-password">
+                      <i id="eye-icon" class="fa fa-eye-slash"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="inputbox">
+                  <input type="submit" value="Login" id="btn" required>
+              </div>
+            </form>
+            <div class="bottom-content">
+                
+            </div>
+        </div>
+    </div>
+    <script src="/js/password.js"></script>
+</body>
+</html>
