@@ -16,13 +16,9 @@
   <div class="clouds"></div>
     <div class="login-form">
         <div class="login">
-            <% if (errors) { %>
-              <div style="color: red;">
-                <ul>
-                  <% errors.forEach(error => { %>
-                    <li><%= error.msg %></li>
-                  <% }); %>
-                </ul>
+            <% if (error) { %>
+              <div style="color: red; text-align: center;">
+                  <%= error %>
               </div>
             <% } %>
             <h2>Sign In</h2>

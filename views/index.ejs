@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
+    <title>Aphantocosm</title>
     <link rel="icon" href="/images/aphantocosm.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="/css/main.css">
 </head>
@@ -16,6 +16,10 @@
         <section>
             <h2>Explore the Unseen</h2>
             <p>Discover the mysteries of the universe and beyond. Join us as we delve into the hidden realms of the Aphantocosm.</p>
+            
+            <% for (let article_id of article_ids) { %>
+                <a href="/article/<%- article_id %>">Article ID (<%- article_id %>)</a>
+            <% } %>
             <img src="/images/ufo.png" alt="UFO">
         </section>
         

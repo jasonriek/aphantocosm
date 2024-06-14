@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/aphantocosm.ico" type="image/x-icon"/>
+    <title>Dark Static Grainy Effect</title>
+    <link rel="stylesheet" href="/css/article.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h2>Aphantocosm</h2>
+        <h3><%- article.category %></h3>
+    </header>
+<div id="shot">
+    <div class="description">
+        <h1><%- article.title %></h1>
+        <p><%- article.user_id %></p><p><%- article.created_at %></p>
+        <img src="/uploads/<%- article.title_image %>" />
+        <canvas id="world"></canvas>
+        <canvas class="grain"></canvas>
+    </div>
+    <div class="card">
+        <div id="component">
+            <%- article.content %>
+        </div>
+    </div>
+</div>
+<footer>
+    <p>&copy; 2024 Aphantocosm. All rights reserved... ALL.</p>
+</footer>
+<script src="/js/article.js"></script>
+</body>
+</html>

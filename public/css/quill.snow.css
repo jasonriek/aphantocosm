@@ -943,3 +943,46 @@
   .ql-container.ql-snow {
     border: 1px solid #ccc;
   }
+
+          /* Dark Theme Styles */
+          .ql-container {
+            background-color: #1e1e1e;
+            color: #c8c8c8;
+        }
+        .ql-editor {
+            background-color: #1e1e1e;
+            color: #c8c8c8;
+        }
+        .ql-toolbar {
+            background-color: #2e2e2e;
+            border-bottom: 1px solid #444;
+        }
+        .ql-toolbar .ql-picker-options {
+            background-color: #2e2e2e;
+        }
+        .ql-toolbar .ql-picker-item {
+            color: #c8c8c8;
+        }
+        .ql-toolbar .ql-picker-label {
+            color: #c8c8c8;
+        }
+        .ql-toolbar button,
+        .ql-toolbar button span {
+            color: #c8c8c8;
+        }
+        .ql-toolbar button:hover,
+        .ql-toolbar button:focus,
+        .ql-toolbar button.ql-active {
+            color: #fff;
+            background-color: #444;
+        }
+        .ql-toolbar .ql-stroke {
+            stroke: #c8c8c8;
+        }
+        .ql-toolbar .ql-fill,
+        .ql-toolbar .ql-stroke.ql-fill {
+            fill: #c8c8c8;
+        }
+        .ql-toolbar .ql-picker-options {
+            border: 1px solid #444;
+        }

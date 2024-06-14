@@ -3,15 +3,31 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const pam = require('authenticate-pam');
 const path = require('path');
+const multer = require('multer');
 const fs = require('fs');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo');
 const { check, validationResult } = require('express-validator');
-const post = require('./models/post');
+
 const config = require('./config');
+
+// Models
+const post = require('./models/post');
+const category = require('./models/categories'); // Assuming you have a Category model
 
 const app = express();
 const port = config.website.port;
+
+// Set up multer for file uploads
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/uploads');
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}_${file.originalname}`);
+    }
+});
+const upload = multer({ storage: storage });
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/aphantocosm').then(() => {
@@ -45,20 +61,33 @@ app.use(session({
 // Serve static files from the "public" directory
 app.use(express.static('public'));
 
+// Route to get an article by ID
+app.get('/article/:id', async (req, res) => {
+    const postId = req.params.id;
+
+    try {
+        // Fetch the article by ID
+        const article = await post.findById(postId).exec();
+        if (!article) {
+            return res.status(404).send('Article not found');
+        }
+
+        console.log("article:", article);
+
+        // Render the article
+        res.render('article', { article: article });
+    } catch (err) {
+        console.error('Error fetching article:', err);
+        res.status(500).send('Internal server error');
+    }
+});
+  
 app.get('/login', (req, res) => {
     const context = {
-        errors: null //[{ msg: null }]; // Replace this with your actual error handling logic
+        error: null //[{ msg: null }]; // Replace this with your actual error handling logic
     }
     res.render('login', context);
 });
-
-app.get('/post/:id', (req, res) => {
-    const postId = req.params.id;
-    const post = db.prepare('SELECT * FROM posts WHERE id = ?').get(postId);
-    const comments = db.prepare('SELECT * FROM comments WHERE post_id = ?').all(postId);
-    res.render('post', { post, comments });
-});
-  
 
 app.post('/login', (req, res) => {
     const username = req.body.username;
@@ -76,31 +105,54 @@ app.post('/login', (req, res) => {
     });
 });
 
-app.get('/dashboard', (req, res) => {
+app.get('/test', (req, res) => {
+    res.render('test');
+});
+
+app.get('/dashboard', async (req, res) => {
     const context = {
         user: req.session.user,
         access_level: req.session.access_level
     };
-    console.log(context);
     if (req.session.user) {
-        res.render('dashboard', context);
+        try {
+            const categories = await category.find({}).select('name').exec();
+            context.categories = categories;
+            res.render('dashboard', context);
+        } catch (err) {
+            console.error('Error fetching categories:', err);
+            res.status(500).send('Internal server error');
+        }
     } else {
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
 app.get('/logout', (req, res) => {
     req.session.destroy((err) => {
-        res.redirect('/');
+        res.redirect('/login');
     });
 });
 
-// Routes
-app.get('/', (req, res) => {
-    res.render('index', { title: 'Aphantocosm - The Hidden World', theme: 'UFO' });
+// Route to get all post IDs and render the index page
+app.get('/', async (req, res) => {
+    let context = {};
+    try {
+        // Fetch all article IDs from the posts collection
+        const posts = await post.find({}).select('_id').exec();
+        const article_ids = posts.map(post => post._id);
+        context.article_ids = article_ids;
+        console.log('article IDS', article_ids);
+        // Render the index page with the article IDs
+        res.render('index', context);
+
+    } catch (err) {
+        console.error('Error fetching post IDs:', err);
+        res.status(500).send('Internal server error');
+    }
 });
 
-app.post('/post', [
+app.post('/post', upload.single('title-image'), [
     check('title').notEmpty().withMessage('Title cannot be empty'),
     check('content').notEmpty().withMessage('Content cannot be empty')
 ], async (req, res) => {
@@ -108,12 +160,19 @@ app.post('/post', [
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
+    console.log('test', req.body);
+    const title = req.body.title;
+    const content = req.body.content;
+    const category = req.body.category;
 
-    const { title, content } = req.body;
+    let title_image = null;
+    if (req.file) {
+        title_image = req.file.filename;
+    }
+
     console.log('session:', req.session);
     const userId = req.session.user;
     let sanitizedContent = content;
-    let cover_image = null;
     console.log('user:', userId);
 
     // Extract and save embedded images (Base64 data)
@@ -155,15 +214,16 @@ app.post('/post', [
 
     try {
         const newPost = new post({
-            title,
+            title: title,
+            category: category,
             content: sanitizedContent,
             user_id: userId,
-            cover_image,
+            title_image:  title_image,
             created_at: currentDate
         });
 
         await newPost.save();
-        res.redirect('/');
+        res.redirect('/dashboard');
     } catch (err) {
         console.error('Error creating post:', err);
         res.status(500).json({ errors: [{ msg: 'Internal server error' }] });

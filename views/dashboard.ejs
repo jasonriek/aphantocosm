@@ -11,6 +11,7 @@
     <script src="/js/quill.js"></script>
     <script src="/js/image-resize.min.js"></script>
     <script src="/js/quill.imageCompressor.min.js"></script>
+    <link rel="stylesheet" href="/css/augmented-ui.css">
 </head>
 <body>
     <div class="container">
@@ -18,25 +19,38 @@
         <a href="/logout">Logout</a>
     
         <% if (user && access_level === 1) { %>
-            <!-- Display blog writing tools only for certain users -->
-              <div class="w3-row main-container">
-                <div class="w3-card-4 w3-margin w3-white" style="padding: 20px;">
+          <!-- Display blog writing tools only for certain users -->
+          <div class="w3-row main-container">
+              <div class="w3-card-4 w3-margin w3-white" style="padding: 20px;">
                   <br>
-                  <form action="/post" method="post">
-                    <label for="title">Title:</label>
-                    <input type="text" name="title" required>
-                    <br><br>
-                    <label for="content">Content:</label>
-                    <div id="editor-container"></div>
-                    <input type="hidden" name="content" id="hidden-editor-input">
-                    <br>
-                    <button type="submit">Submit</button>
+                  <form action="/post" method="post" enctype="multipart/form-data">
+                      <label for="title">Title:</label>
+                      <input type="text" name="title" required>
+                      <br><br>
+                      <label for="title-image">Title Image:</label>
+                      <input id="title-image-input" type="file" name="title-image" accept="image/*">
+                      <br><br>
+                      <img id="title-image-preview" src="#" alt="Image Preview" style="display: none; width: 100px; height: auto;"/>
+                      <br><br>
+                      <label for="category">Category:</label>
+                      <select name="category" id="category-select" required>
+                          <% categories.forEach(category => { %>
+                              <option value="<%= category.name %>"><%= category.name %></option>
+                          <% }); %>
+                      </select>
+                      <br><br>
+                      <label for="content">Content:</label>
+                      <div id="editor-container"></div>
+                      <input type="hidden" name="content" id="hidden-editor-input">
+                      <br>
+                      <button type="submit">Submit</button>
                   </form>
-                </div>
               </div>
-        <% } %>
+          </div>
+          <% } %>
     </div>
     <script src="/js/quill_editor_posts.js"></script>
+    <script src="/js/image-preview.js"></script>
     <script src="/js/utils.js"></script>
 </body>
 </html>
