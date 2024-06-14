@@ -18,6 +18,8 @@ const category = require('./models/categories'); // Assuming you have a Category
 const app = express();
 const port = config.website.port;
 
+
+
 // Set up multer for file uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -27,7 +29,14 @@ const storage = multer.diskStorage({
         cb(null, `${Date.now()}_${file.originalname}`);
     }
 });
-const upload = multer({ storage: storage });
+const upload = multer({
+    storage: storage,
+    limits: {
+        fieldSize: 50 * 1024 * 1024, // Increase the field size limit to 10MB
+        fileSize: 50 * 1024 * 1024   // Increase the file size limit to 10MB
+    }
+});
+
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/aphantocosm').then(() => {
@@ -190,17 +199,13 @@ app.post('/post', upload.single('title-image'), [
             // Return the filename or path if needed
             return filename;
         });
-
         // Replace image sources with filenames in the content
         sanitizedContent = content;
         images.forEach((image, index) => {
-            if (index === 0) {
-                cover_image = image;
-                sanitizedContent = sanitizedContent.replace(matches[index], " ");
-            } else {
-                sanitizedContent = sanitizedContent.replace(matches[index], `src="/uploads/${image}"`);
-            }
+        sanitizedContent = sanitizedContent.replace(matches[index], `src="/uploads/${image}"`);
         });
+        // Your processing logic for embedded images here
+        console.log('images:', images);
     }
 
     // Check if the user is allowed to create a post

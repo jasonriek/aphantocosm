@@ -43,11 +43,28 @@ a:hover {
     text-decoration: none;
 }
 
+.banner-image {
+    width: 700px;
+    margin: auto;
+}
+
+.banner-image img {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Remove inline-block whitespace */
+}
+
 #shot {
     width: 700px;
     margin: auto;
     position: relative;
     padding-bottom: 100px;
+}
+#shot img {
+    max-width: 100%; /* Scale down if the image is larger than the container */
+    width: auto; /* Keep original size if the image is smaller */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Remove inline-block whitespace */
 }
 #shot .card {
     width: 100%;
@@ -141,4 +158,75 @@ footer p {
     opacity: 0.3;
     margin: 0;
     font-size: 0.6em;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 1200px) {
+    .banner-image,
+    #shot {
+        width: 90%;
+    }
+
+    #shot .options {
+        right: -210px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+
+    h1 {
+        font-size: 28px;
+        margin: 15px 0 8px;
+    }
+
+    .banner-image,
+    #shot {
+        width: 100%;
+    }
+
+    #shot .options {
+        width: 100%;
+        position: static;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #shot .options button {
+        margin: 5px 0;
+        width: 90%;
+    }
+
+    header {
+        height: 150px;
+    }
+
+    footer p {
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 12px;
+    }
+
+    h1 {
+        font-size: 24px;
+        margin: 10px 0 5px;
+    }
+
+    #shot .options button {
+        font-size: 12px;
+    }
+
+    header {
+        height: 100px;
+    }
+
+    footer p {
+        font-size: 0.6em;
+    }
 }
