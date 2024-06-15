@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Rajdhani", sans-serif;
     background-color: #000;
     color: #fff;
     text-align: center;
@@ -22,11 +22,16 @@ header p {
     font-size: 1.2em;
 }
 
+section {
+    margin-top: 250px;
+}
+
 main {
     padding: 20px;
 }
 
 footer {
+    text-align: center;
     background-color: #111;
     padding: 10px 0;
     position: fixed;
@@ -35,6 +40,7 @@ footer {
 }
 
 footer p {
+    opacity: 0.3;
     margin: 0;
-    font-size: 0.8em;
+    font-size: 0.6em;
 }
