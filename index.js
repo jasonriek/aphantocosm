@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const pam = require('authenticate-pam');
 const path = require('path');
 const multer = require('multer');
+const utils = require('./service/utils');
 const fs = require('fs');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo');
@@ -17,7 +18,6 @@ const category = require('./models/categories'); // Assuming you have a Category
 
 const app = express();
 const port = config.website.port;
-
 
 
 // Set up multer for file uploads
@@ -71,18 +71,22 @@ app.use(session({
 app.use(express.static('public'));
 
 // Route to get an article by ID
-app.get('/article/:id', async (req, res) => {
-    const postId = req.params.id;
+app.get('/articles/:category/:title', async (req, res) => {
+    const category = req.params.category.toLowerCase();
+    const title = utils.toURLString(req.params.title);
 
     try {
         // Fetch the article by ID
-        const article = await post.findById(postId).exec();
+        //const article = await post.findById(article_id).exec();
+        const article = await post.findOne({category: category, title: title});
+
         if (!article) {
             return res.status(404).send('Article not found');
         }
+        
+        console.log("article here:", article);
 
-        console.log("article:", article);
-
+        article.title = utils.toTitleString(title);
         // Render the article
         res.render('article', { article: article });
     } catch (err) {
@@ -148,10 +152,9 @@ app.get('/', async (req, res) => {
     let context = {};
     try {
         // Fetch all article IDs from the posts collection
-        const posts = await post.find({}).select('_id').exec();
-        const article_ids = posts.map(post => post._id);
-        context.article_ids = article_ids;
-        console.log('article IDS', article_ids);
+        const articles = await post.find({}).exec();
+        context.articles = articles;
+        console.log('articles', articles);
         // Render the index page with the article IDs
         res.render('index', context);
 
@@ -170,7 +173,7 @@ app.post('/post', upload.single('title-image'), [
         return res.status(400).json({ errors: errors.array() });
     }
     console.log('test', req.body);
-    const title = req.body.title;
+    const title = utils.toURLString(req.body.title);
     const content = req.body.content;
     const category = req.body.category;
 

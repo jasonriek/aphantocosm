@@ -8,14 +8,13 @@ body {
 }
 
 header {
-    background-color: #111;
-    padding: 20px 0;
-}
-
-header h1 {
+    height: 200px;
+    width: 100%;
+    position: absolute;
+    text-align: center;
     margin: 0;
-    font-size: 3em;
-    color: #00ff00;
+    top: 0;
+    background-color: #111;
 }
 
 header p {

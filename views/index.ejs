@@ -17,8 +17,8 @@
             <h2>Explore the Unseen</h2>
             <p>Discover the mysteries of the universe and beyond. Join us as we delve into the hidden realms of the Aphantocosm.</p>
             
-            <% for (let article_id of article_ids) { %>
-                <a href="/article/<%- article_id %>">Article ID (<%- article_id %>)</a>
+            <% for (let article of articles) { %>
+                <a href="/articles/<%- article.category %>/<%- article.title %>">aphantocosm.com/articles/<%- article.category %>/<%- article.title %></a>
                 <br><br>
             <% } %>
 
