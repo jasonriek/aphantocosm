@@ -1,6 +1,7 @@
 body {margin: 0;
     background-color: #000000;
     font-family: "Rajdhani", sans-serif;
+    color: #ddd;
   }
 
 .header-container {
@@ -12,21 +13,13 @@ body {margin: 0;
     background-position: center; /* Center the image */
 }
 
-
-body,h1,h2,h3,h4,h5 {
-
-h1 {
-    margin-top: 0;
-    padding-top: 0;
-    font-size: 70px;
-    text-shadow:
-    3px 3px 0 #ffffff,
-  -1px -1px 0 #ffffff,  
-   1px -1px 0 #ffffff,
-   -1px 1px 0 #ffffff,
-    1px 1px 0 #ffffff;
-    line-height: 90px;
+.panel {
+  background-color: #1e1e1e;
+  border: 1px solid #fff;
+  border-radius: 10px;
 }
+
+body,h1,h2,h3,h4,h5 {font-family: "Rajdhani", sans-serif;}
 
 .header-click {
     text-decoration: none;
@@ -102,7 +95,7 @@ canvas {
 .toggle-password {
   position: absolute;
   right: 10px;
-  top: 50%;
+  top: 80%;
   transform: translateY(-120%);
   cursor: pointer;
 }
@@ -218,9 +211,10 @@ height: 1000px;
   background: rgba(255, 255, 255, 0.25px);
   backdrop-filter: blur(15px);
   border: 1px solid #fff;
+  /*background-color: #191C24 !important;*/
   border-bottom: 1px solid rgba(255, 255, 255, 0.5px);
   border-right: 1px solid rgba(255, 255, 255, 0.5px);
-  border-radius: 20px;
+  border-radius: 10px;
   box-shadow: 0px 25px 50px rgba(0,0,0,0.1);
 }
 .login h2{
@@ -231,8 +225,7 @@ height: 1000px;
   font-weight: 600;
   color: #ffffff;
 }
-.login .inputbox input{
-  font-family: "Rajdhani", sans-serif;
+.inputbox input{
   width: 100%;
   padding: 10px 20px;
   outline: none;
@@ -251,14 +244,14 @@ height: 1000px;
   border: none;
   outline: none;
   color: rgb(0, 0, 0);
-  background-color: #ffffff;
+  background-color: #46bef5;
   font-size: 1.25em;
   font-weight: 500;
   transition: 0.5s;
   cursor: pointer;
 }
 #btn:hover{
-  background-color: #c7c7c7;
+  background-color: #46bef58f;
 }
 .bottom-content{
   display: flex;

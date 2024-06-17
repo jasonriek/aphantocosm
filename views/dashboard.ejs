@@ -4,14 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/images/aphantocosm.ico" type="image/x-icon"/>
+    <link href="/css/fontawesome.css" rel="stylesheet" />
+    <link href="/css/brands.css" rel="stylesheet" />
+    <link href="/css/solid.css" rel="stylesheet" />
     <link rel="stylesheet" href="/css/w3.css" />
     <link rel="stylesheet" href="/css/quill.snow.css" />
     <title>Aphantocosm Dashboard</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/dashboard.css">
     <script src="/js/quill.js"></script>
     <script src="/js/image-resize.min.js"></script>
     <script src="/js/quill.imageCompressor.min.js"></script>
-    <link rel="stylesheet" href="/css/augmented-ui.css">
+
 </head>
 <body>
     <div class="container">
@@ -21,7 +30,7 @@
         <% if (user && access_level === 1) { %>
           <!-- Display blog writing tools only for certain users -->
           <div class="w3-row main-container">
-              <div class="w3-card-4 w3-margin w3-white" style="padding: 20px;">
+              <div class="w3-card-4 w3-margin panel" style="padding: 20px;">
                   <br>
                   <form action="/post" method="post" enctype="multipart/form-data">
                       <label for="title">Title:</label>
@@ -43,7 +52,10 @@
                       <div id="editor-container"></div>
                       <input type="hidden" name="content" id="hidden-editor-input">
                       <br>
-                      <button type="submit">Submit</button>
+                      <div class="inputbox">
+                        <input type="submit" value="Post" id="btn" required>
+                      </div>
+
                   </form>
               </div>
           </div>
