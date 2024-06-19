@@ -12,6 +12,7 @@
     <title>Aphantocosm Dashboard</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link href="/css/all.min.css" rel="stylesheet">
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Template Stylesheet -->
@@ -23,46 +24,188 @@
 
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome, <%= user %>!</h1>
+    <div class="container-fluid position-relative d-flex p-0">
+                <!-- Spinner Start -->
+                <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+                    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+
+                        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-secondary navbar-dark">
+                <a href="/" target="_blank" class="navbar-brand mx-4 mb-3">
+                    <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>Aphantocosm</h3>
+                </a>
+                <div class="d-flex align-items-center ms-4 mb-4">
+                    <div class="position-relative">
+                        <img class="rounded-circle" src="/profiles/<%- user %>/images/<%- profile.image %>" alt="" style="width: 40px; height: 40px;">
+                        <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+                    </div>
+                    <div class="ms-3">
+                        <h6 class="mb-0"><%- user %></h6>
+                        <span>Contributer</span>
+                    </div>
+                </div>
+                <div class="navbar-nav w-100">
+                    <a href="index.html" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="signin.html" class="dropdown-item">Sign In</a>
+                            <a href="signup.html" class="dropdown-item">Sign Up</a>
+                            <a href="404.html" class="dropdown-item">404 Error</a>
+                            <a href="blank.html" class="dropdown-item">Blank Page</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!-- Sidebar End -->
+
+
+        
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
+                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                    <h2 class="text-primary mb-0"><i class="fa fa-user-edit"></i></h2>
+                </a>
+                <a href="#" class="sidebar-toggler flex-shrink-0">
+                    <i class="fa fa-bars"></i>
+                </a>
+
+                <div class="navbar-nav align-items-center ms-auto">
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" id="account-button">
+                            <img class="rounded-circle me-lg-2" src="/profiles/<%- user %>/images/<%- profile.image %>" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex"><%- user %></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0" id="account-menu">
+                            <a href="#" class="dropdown-item">My Profile</a>
+                            <a href="#" class="dropdown-item">Settings</a>
+                            <a href="/logout" class="dropdown-item">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Navbar End -->
+
+            <!-- Widgets Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-lg-12 col-lg-6 col-lg-4">
+                        <% if (user && access_level === 1) { %>
+                        <!-- Display blog writing tools only for certain users -->
+                        <div class="h-100 bg-secondary rounded p-4">
+           
+                                <form action="/post" method="post" enctype="multipart/form-data">
+                                                    <input type="text" class="title-input" placeholder="Enter Title..." name="title" required/>
+                                                    <br><br>
+                                                    <label for="title-image">Title Image:</label>
+                                                    <input id="title-image-input" type="file" name="title-image" accept="image/*">
+                                                    <br><br>
+                                                    <img id="title-image-preview" src="#" alt="Image Preview" style="display: none; width: 100px; height: auto;"/>
+                                                    <br><br>
+                                                    <label for="category">Category:</label>
+                                                    <div class="dropdown dropdown-dark">
+                                                        <select name="category" id="category-select" class="dropdown-select" required>
+                                                            <% categories.forEach(category => { %>
+                                                                <option value="<%= category.name %>"><%= category.name %></option>
+                                                            <% }); %>
+                                                        </select>
+                                                    </div>
+
+                                                    <br><br>
+                                                    <label for="content">Content:</label>
+                                                    <div id="editor-container"></div>
+                                                    <input type="hidden" name="content" id="hidden-editor-input">
+                                                    <br>
+                                                    <div class="inputbox">
+                                                      <input type="submit" value="Post" id="btn" required>
+                                                    </div>
+                              
+                                                </form>
+                                 
+                                        </div>
+                                        <% } %>
+                    </div>
+                </div>
+                <br>
+                <div class="row g-4">
+                    <div class="col-sm-12 col-md-6 col-xl-4">
+                        <div class="h-100 bg-secondary rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">Articles</h6>
+                                <a href="">Show All</a>
+                            </div>
+                            <div class="d-flex mb-2">
+                                <input class="form-control bg-dark border-0" type="text" placeholder="Enter article">
+                                <button type="button" class="btn btn-primary ms-2">Search</button>
+                            </div>
+                            <div class="d-flex align-items-center border-bottom py-2">
+                                <input class="form-check-input m-0" type="checkbox">
+                                    <div class="w-100 ms-3">
+                                                <div class="d-flex w-100 align-items-center justify-content-between">
+                                                    <span>Short task goes here...</span>
+                                                    <button class="btn btn-sm"><i class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center border-bottom py-2">
+                                            <input class="form-check-input m-0" type="checkbox">
+                                            <div class="w-100 ms-3">
+                                                <div class="d-flex w-100 align-items-center justify-content-between">
+                                                    <span>Short task goes here...</span>
+                                                    <button class="btn btn-sm"><i class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center border-bottom py-2">
+                                            <input class="form-check-input m-0" type="checkbox" checked>
+                                            <div class="w-100 ms-3">
+                                                <div class="d-flex w-100 align-items-center justify-content-between">
+                                                    <span><del>Short task goes here...</del></span>
+                                                    <button class="btn btn-sm text-primary"><i class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center border-bottom py-2">
+                                            <input class="form-check-input m-0" type="checkbox">
+                                            <div class="w-100 ms-3">
+                                                <div class="d-flex w-100 align-items-center justify-content-between">
+                                                    <span>Short task goes here...</span>
+                                                    <button class="btn btn-sm"><i class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center pt-2">
+                                            <input class="form-check-input m-0" type="checkbox">
+                                            <div class="w-100 ms-3">
+                                                <div class="d-flex w-100 align-items-center justify-content-between">
+                                                    <span>Short task goes here...</span>
+                                                    <button class="btn btn-sm"><i class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Widgets End -->
+</div>
+
         <a href="/logout">Logout</a>
     
-        <% if (user && access_level === 1) { %>
-          <!-- Display blog writing tools only for certain users -->
-          <div class="w3-row main-container">
-              <div class="w3-card-4 w3-margin panel" style="padding: 20px;">
-                  <br>
-                  <form action="/post" method="post" enctype="multipart/form-data">
-                      <label for="title">Title:</label>
-                      <input type="text" name="title" required>
-                      <br><br>
-                      <label for="title-image">Title Image:</label>
-                      <input id="title-image-input" type="file" name="title-image" accept="image/*">
-                      <br><br>
-                      <img id="title-image-preview" src="#" alt="Image Preview" style="display: none; width: 100px; height: auto;"/>
-                      <br><br>
-                      <label for="category">Category:</label>
-                      <select name="category" id="category-select" required>
-                          <% categories.forEach(category => { %>
-                              <option value="<%= category.name %>"><%= category.name %></option>
-                          <% }); %>
-                      </select>
-                      <br><br>
-                      <label for="content">Content:</label>
-                      <div id="editor-container"></div>
-                      <input type="hidden" name="content" id="hidden-editor-input">
-                      <br>
-                      <div class="inputbox">
-                        <input type="submit" value="Post" id="btn" required>
-                      </div>
 
-                  </form>
-              </div>
-          </div>
-          <% } %>
     </div>
     <script src="/js/quill_editor_posts.js"></script>
     <script src="/js/image-preview.js"></script>
     <script src="/js/utils.js"></script>
+    <script src="/js/dashboard.js"></script>
 </body>
 </html>

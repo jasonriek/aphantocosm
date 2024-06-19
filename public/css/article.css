@@ -45,9 +45,10 @@ a:hover {
 
 .banner-image {
     width: 700px;
-    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-
 .banner-image img {
     width: 100%;
     height: auto; /* Maintain aspect ratio */

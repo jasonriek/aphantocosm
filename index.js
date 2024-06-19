@@ -15,6 +15,7 @@ const config = require('./config');
 // Models
 const post = require('./models/post');
 const category = require('./models/categories'); // Assuming you have a Category model
+const profiles = require('./models/profiles');
 
 const app = express();
 const port = config.website.port;
@@ -123,14 +124,18 @@ app.get('/test', (req, res) => {
 });
 
 app.get('/dashboard', async (req, res) => {
+    let user = req.session.user;
     const context = {
-        user: req.session.user,
+        user: user,
         access_level: req.session.access_level
     };
     if (req.session.user) {
         try {
             const categories = await category.find({}).select('name').exec();
+            const profile = await profiles.findOne({'user': user}).exec();
             context.categories = categories;
+            context.profile = profile;
+            
             res.render('dashboard', context);
         } catch (err) {
             console.error('Error fetching categories:', err);
