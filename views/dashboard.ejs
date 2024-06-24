@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <div class="navbar-nav w-100">
-                    <a href="index.html" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                    <a href="/dashboard" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
                         <div class="dropdown-menu bg-transparent border-0">
@@ -100,37 +100,37 @@
                         <% if (user && access_level === 1) { %>
                         <!-- Display blog writing tools only for certain users -->
                         <div class="h-100 bg-secondary rounded p-4">
-           
                                 <form action="/post" method="post" enctype="multipart/form-data">
-                                                    <input type="text" class="title-input" placeholder="Enter Title..." name="title" required/>
-                                                    <br><br>
-                                                    <label for="title-image">Title Image:</label>
-                                                    <input id="title-image-input" type="file" name="title-image" accept="image/*">
-                                                    <br><br>
-                                                    <img id="title-image-preview" src="#" alt="Image Preview" style="display: none; width: 100px; height: auto;"/>
-                                                    <br><br>
-                                                    <label for="category">Category:</label>
-                                                    <div class="dropdown dropdown-dark">
-                                                        <select name="category" id="category-select" class="dropdown-select" required>
-                                                            <% categories.forEach(category => { %>
-                                                                <option value="<%= category.name %>"><%= category.name %></option>
-                                                            <% }); %>
-                                                        </select>
-                                                    </div>
-
-                                                    <br><br>
-                                                    <label for="content">Content:</label>
-                                                    <div id="editor-container"></div>
-                                                    <input type="hidden" name="content" id="hidden-editor-input">
-                                                    <br>
-                                                    <div class="inputbox">
-                                                      <input type="submit" value="Post" id="btn" required>
-                                                    </div>
-                              
-                                                </form>
-                                 
-                                        </div>
-                                        <% } %>
+                                    <input type="text" class="title-input" placeholder="Enter Title..." name="title" required/>
+                                    <br><br>
+                                    <label for="title-image">Title Image:</label>
+                                    <input id="title-image-input" type="file" name="title-image" accept="image/*">
+                                    <br><br>
+                                    <img id="title-image-preview" src="#" alt="Image Preview" style="display: none; width: 100px; height: auto;"/>
+                                    <br><br>
+                                    <label for="category">Category:</label>
+                                     <div class="dropdown dropdown-dark">
+                                        <select name="category" id="category-select" class="dropdown-select" required>
+                                            <% categories.forEach(category => { %>
+                                                <option value="<%= category.name %>"><%= category.name %></option>
+                                            <% }); %>
+                                        </select>
+                                    </div>
+                                    <br><br>
+                                    <label for="content">Content:</label>
+                                    <div id="editor-container"></div>
+                                    <input type="hidden" name="content" id="hidden-editor-input">
+                                    <br>
+                                    <label for="tags">Tags:</label>
+                                    <input type="text" id="tagInput" placeholder="Enter a tag">
+                                    <button type="button" onclick="addTag()">Add Tag</button><br>
+                                    <div id="tagsContainer"></div><br>
+                                    <div class="inputbox">
+                                        <input type="submit" value="Post" id="btn" required>
+                                    </div>
+                                </form>
+                            </div>
+                        <% } %>
                     </div>
                 </div>
                 <br>
@@ -191,17 +191,14 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
     <!-- Widgets End -->
-</div>
-
+    </div>
         <a href="/logout">Logout</a>
-    
-
     </div>
     <script src="/js/quill_editor_posts.js"></script>
     <script src="/js/image-preview.js"></script>

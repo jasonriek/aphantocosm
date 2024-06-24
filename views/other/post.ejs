@@ -12,8 +12,8 @@
     <title>Aphantocosm</title>
 </head>
 <body>
-    <h1><%- post.title %></h1>
-    <p><%- post.content %></p>
+    <h1><%- article.title %></h1>
+    <p><%- article.content %></p>
     <hr>
     <!-- Render comment UI only if user has 'user' or 'admin' role -->
     <% if (user) { %>
@@ -22,14 +22,14 @@
                 <label for="content">Comment:</label>
                 <div name="content" id="editor-container"></div>
                 <input type="hidden" name="content" id="hidden-editor-input">
-                <input type="hidden" name="postId" value="<%= post.id %>">
+                <input type="hidden" name="articleId" value="<%= article.id %>">
                 <button type="submit">Submit Comment</button>
             </form>
         <% } %>
     <% } else { %>
         <p>You need to be logged in to leave a comment.</p>
     <% } %>
-    
+    s
     <h2>Comments</h2>
     <% comments.forEach(comment => { %>
     <ul>

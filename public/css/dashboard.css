@@ -108,7 +108,7 @@ canvas {
   font-size: 1.5em; /* Adjust the font size as needed */
   border: none;
   color: #aaa;
-  border-bottom: 2px solid #aaa; /* Bottom border only */
+  border-bottom: 1px solid #aaa; /* Bottom border only */
   background: transparent;
   outline: none; /* Remove the default outline */
   padding: 10px 0; /* Optional: Add some padding */
@@ -116,6 +116,15 @@ canvas {
 }
 .title-input::placeholder {
   color: #636363; /* Placeholder text color */
+}
+
+.tag {
+  display: inline-block;
+  padding: 5px;
+  margin: 5px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 @keyframes move-twink-back {

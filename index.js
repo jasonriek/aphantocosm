@@ -13,9 +13,10 @@ const { check, validationResult } = require('express-validator');
 const config = require('./config');
 
 // Models
-const post = require('./models/post');
+const article_model = require('./models/articles');
 const category = require('./models/categories'); // Assuming you have a Category model
 const profiles = require('./models/profiles');
+const tag_model = require('./models/tags');
 
 const app = express();
 const port = config.website.port;
@@ -78,8 +79,8 @@ app.get('/articles/:category/:title', async (req, res) => {
 
     try {
         // Fetch the article by ID
-        //const article = await post.findById(article_id).exec();
-        const article = await post.findOne({category: category, title: title});
+        //const article = await article.findById(article_id).exec();
+        const article = await article_model.findOne({category: category, title: title});
 
         if (!article) {
             return res.status(404).send('Article not found');
@@ -157,7 +158,7 @@ app.get('/', async (req, res) => {
     let context = {};
     try {
         // Fetch all article IDs from the posts collection
-        const articles = await post.find({}).exec();
+        const articles = await article_model.find({}).exec();
         context.articles = articles;
         console.log('articles', articles);
         // Render the index page with the article IDs
@@ -169,7 +170,7 @@ app.get('/', async (req, res) => {
     }
 });
 
-app.post('/post', upload.single('title-image'), [
+app.post('/article', upload.single('title-image'), [
     check('title').notEmpty().withMessage('Title cannot be empty'),
     check('content').notEmpty().withMessage('Content cannot be empty')
 ], async (req, res) => {
@@ -181,6 +182,16 @@ app.post('/post', upload.single('title-image'), [
     const title = utils.toURLString(req.body.title);
     const content = req.body.content;
     const category = req.body.category;
+
+    const tagArray = tags.split(',').map(tag => tag.trim());
+    const tagDocs = await Promise.all(tagArray.map(async (tag) => {
+        let tagDoc = await tag_model.findOne({ name: tag });
+        if (!tagDoc) {
+            tagDoc = new tag_model({ name: tag });
+            await tagDoc.save();
+        }
+        return tagDoc._id;
+    }));
 
     let title_image = null;
     if (req.file) {
@@ -226,16 +237,17 @@ app.post('/post', upload.single('title-image'), [
     const currentDate = new Date().toISOString(); // Get the current date and time in ISO format
 
     try {
-        const newPost = new post({
+        const newArticle = new article_model({
             title: title,
             category: category,
             content: sanitizedContent,
             user_id: userId,
             title_image:  title_image,
+            tags: tagDocs,
             created_at: currentDate
         });
 
-        await newPost.save();
+        await newArticle.save();
         res.redirect('/dashboard');
     } catch (err) {
         console.error('Error creating post:', err);

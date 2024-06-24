@@ -31,4 +31,31 @@ document.addEventListener("DOMContentLoaded", function() {
 
 });
 
+function addTag() {
+    const tagInput = document.getElementById('tagInput');
+    const tagsContainer = document.getElementById('tagsContainer');
+    const tag = tagInput.value.trim();
+
+    if (tag) {
+        const tagElement = document.createElement('span');
+        tagElement.className = 'tag';
+        tagElement.textContent = tag;
+        tagElement.onclick = function() { removeTag(tagElement); };
+
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'tags';
+        hiddenInput.value = tag;
+
+        tagElement.appendChild(hiddenInput);
+        tagsContainer.appendChild(tagElement);
+
+        tagInput.value = '';
+    }
+}
+
+function removeTag(tagElement) {
+    tagElement.remove();
+}
+
 

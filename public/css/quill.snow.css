@@ -6,7 +6,7 @@
  */
  .ql-container {
     box-sizing: border-box;
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: "Rajdhani", sans-serif;
     font-size: 13px;
     height: 100%;
     margin: 0px;
@@ -439,7 +439,7 @@
   .ql-snow .ql-toolbar .ql-picker-item:hover,
   .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
   .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
-    color: #06c;
+    color: #46bef5;
   }
   .ql-snow.ql-toolbar button:hover .ql-fill,
   .ql-snow .ql-toolbar button:hover .ql-fill,
@@ -469,7 +469,7 @@
   .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill,
   .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill,
   .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill {
-    fill: #06c;
+    fill: #46bef5;
   }
   .ql-snow.ql-toolbar button:hover .ql-stroke,
   .ql-snow .ql-toolbar button:hover .ql-stroke,
@@ -499,7 +499,7 @@
   .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
   .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
   .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
-    stroke: #06c;
+    stroke: #46bef5;
   }
   @media (pointer: coarse) {
     .ql-snow.ql-toolbar button:hover:not(.ql-active),
@@ -848,7 +848,7 @@
   .ql-toolbar.ql-snow {
     border: 1px solid #ccc;
     box-sizing: border-box;
-    font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: "Rajdhani", sans-serif;
     padding: 8px;
   }
   .ql-toolbar.ql-snow .ql-formats {
@@ -950,15 +950,15 @@
             color: #c8c8c8;
         }
         .ql-editor {
-            background-color: #1e1e1e;
+            background: linear-gradient(0deg, rgba(70, 225, 245, 0.1) 50%, rgba(17, 17, 17, 0) 100%);
             color: #c8c8c8;
         }
         .ql-toolbar {
-            background-color: #2e2e2e;
+            background-color: #000000;
             border-bottom: 1px solid #444;
         }
         .ql-toolbar .ql-picker-options {
-            background-color: #2e2e2e;
+            background-color: #000000;
         }
         .ql-toolbar .ql-picker-item {
             color: #c8c8c8;
