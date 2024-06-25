@@ -31,31 +31,75 @@ document.addEventListener("DOMContentLoaded", function() {
 
 });
 
-function addTag() {
-    const tagInput = document.getElementById('tagInput');
-    const tagsContainer = document.getElementById('tagsContainer');
-    const tag = tagInput.value.trim();
+function removeTag(button) {
+    button.parentElement.remove();
+}
 
-    if (tag) {
-        const tagElement = document.createElement('span');
-        tagElement.className = 'tag';
-        tagElement.textContent = tag;
-        tagElement.onclick = function() { removeTag(tagElement); };
+function addTag(event) {
+    if (event.key === 'Enter' && event.target.value.trim() !== '') {
+        event.preventDefault(); // Prevent the default form submission behavior
+        const tagContainer = document.querySelector('.tag-container');
+        const newTag = document.createElement('div');
+        newTag.className = 'tag';
+
+        const tagText = document.createElement('span');
+        tagText.innerText = event.target.value.trim();
+        newTag.appendChild(tagText);
+
+        const removeButton = document.createElement('button');
+        removeButton.className = 'remove-tag';
+        removeButton.innerText = 'x';
+        removeButton.setAttribute('onclick', 'removeTag(this)');
+        newTag.appendChild(removeButton);
 
         const hiddenInput = document.createElement('input');
         hiddenInput.type = 'hidden';
         hiddenInput.name = 'tags';
-        hiddenInput.value = tag;
+        hiddenInput.value = event.target.value.trim();
+        newTag.appendChild(hiddenInput);
 
-        tagElement.appendChild(hiddenInput);
-        tagsContainer.appendChild(tagElement);
-
-        tagInput.value = '';
+        tagContainer.insertBefore(newTag, event.target);
+        event.target.value = '';
     }
 }
 
-function removeTag(tagElement) {
-    tagElement.remove();
+function addTagManually(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+    const tag_input = document.getElementById('tag-input');
+    const tag_content = tag_input.value.trim();
+    
+    if(tag_content) {
+        const tagContainer = document.querySelector('.tag-container');
+        const newTag = document.createElement('div');
+        newTag.className = 'tag';
+
+        const tagText = document.createElement('span');
+        tagText.innerText = tag_content;
+        newTag.appendChild(tagText);
+
+        const removeButton = document.createElement('button');
+        removeButton.className = 'remove-tag';
+        removeButton.innerText = 'x';
+        removeButton.setAttribute('onclick', 'removeTag(this)');
+        newTag.appendChild(removeButton);
+
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'tags';
+        hiddenInput.value = tag_content;
+        newTag.appendChild(hiddenInput);
+        
+        tagContainer.insertBefore(newTag, tag_input);
+    }
+}
+
+function handleSubmit(event) {
+    const tagsContainer = document.querySelector('.tag-container');
+    const tagElements = tagsContainer.querySelectorAll('.tag');
+    if (tagElements.length === 0) {
+        event.preventDefault();
+        alert('Please add at least one tag.');
+    }
 }
 
 

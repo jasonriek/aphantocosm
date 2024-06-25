@@ -163,6 +163,29 @@ footer p {
     font-size: 0.6em;
 }
 
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 600px;
+    margin: 20px auto;
+  }
+  
+  .tag {
+    display: flex;
+    align-items: center;
+    background-color: #46bef5;
+    color: #111111;
+    border-radius: 3px;
+    padding: 5px 10px;
+    margin: 5px;
+  }
+  
+  .tag span {
+    margin-right: 10px;
+  }
+
 /* Media Queries for Responsive Design */
 @media (max-width: 1200px) {
     .banner-image,

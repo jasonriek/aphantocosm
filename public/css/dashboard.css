@@ -114,17 +114,90 @@ canvas {
   padding: 10px 0; /* Optional: Add some padding */
   width: 100%;
 }
+
 .title-input::placeholder {
   color: #636363; /* Placeholder text color */
 }
 
+
+
+.tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+  margin: 20px auto;
+}
+
 .tag {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  background-color: #000000;
+  color: #FFFFFF;
+  /*border: 1px solid #ccc;*/
+  border-radius: 3px;
+  padding: 5px 10px;
+  margin: 5px;
+}
+
+.tag span {
+  margin-right: 10px;
+}
+
+.remove-tag {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #888;
+}
+
+.tag-input {
+  border: none;
+  color: #aaa;
+  border-bottom: 1px solid #aaa; /* Bottom border only */
+  background: transparent;
+  outline: none; /* Remove the default outline */
+  padding: 10px 0; /* Optional: Add some padding */
   padding: 5px;
   margin: 5px;
-  background-color: #e0e0e0;
-  border-radius: 5px;
+  font-size: 14px;
+}
+
+.add-tag-button {
+  background-color: #46bef5;
+  text-align: center;
+  border: none;
+  color: #111111;
+  font-size: 24px;
+  padding: 6px;
   cursor: pointer;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.dropdown {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 1;
+}
+
+.dropdown div {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.dropdown div:hover {
+  background-color: #f1f1f1;
 }
 
 @keyframes move-twink-back {

@@ -28,7 +28,14 @@
             <%- article.content %>
         </div>
     </div>
+    <br><br>
+    <div class="tag-container">
+        <% article.tags.forEach(tag => { %>
+            <span class="tag"><%- tag.name %></span>
+        <% }) %>
+    </div>
 </div>
+
 <footer>
     <p>&copy; 2024 Aphantocosm. All rights reserved... ALL.</p>
 </footer>
