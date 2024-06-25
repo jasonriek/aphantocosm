@@ -950,8 +950,10 @@
             color: #c8c8c8;
         }
         .ql-editor {
-            background: linear-gradient(0deg, rgba(70, 225, 245, 0.1) 50%, rgba(17, 17, 17, 0) 100%);
+          background-color: #000;
+
             color: #c8c8c8;
+            min-height: 300px;
         }
         .ql-toolbar {
             background-color: #000000;

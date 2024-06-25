@@ -142,7 +142,8 @@ router.post('/article', upload.single('title-image'), [
 
         await newArticle.save();
         res.redirect('/dashboard');
-    } catch (err) {
+    } 
+    catch (err) {
         console.error('Error creating post:', err);
         res.status(500).json({ errors: [{ msg: 'Internal server error' }] });
     }

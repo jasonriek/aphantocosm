@@ -35,15 +35,28 @@ function removeTag(button) {
     button.parentElement.remove();
 }
 
+function tagNameExists(tag_name) {
+    const tags = document.getElementsByName('tags');
+    for(let tag of tags) {
+        if(tag.value === tag_name) {return true;}
+    }
+    return false;
+}
+
 function addTag(event) {
-    if (event.key === 'Enter' && event.target.value.trim() !== '') {
+    const tag_content = event.target.value.trim();
+    if (event.key === 'Enter' && tag_content !== '') {
         event.preventDefault(); // Prevent the default form submission behavior
+        if(tagNameExists(tag_content)) {
+            tag_input.value = '';
+            return;
+        }
         const tagContainer = document.querySelector('.tag-container');
         const newTag = document.createElement('div');
         newTag.className = 'tag';
 
         const tagText = document.createElement('span');
-        tagText.innerText = event.target.value.trim();
+        tagText.innerText = tag_content;
         newTag.appendChild(tagText);
 
         const removeButton = document.createElement('button');
@@ -55,7 +68,7 @@ function addTag(event) {
         const hiddenInput = document.createElement('input');
         hiddenInput.type = 'hidden';
         hiddenInput.name = 'tags';
-        hiddenInput.value = event.target.value.trim();
+        hiddenInput.value = tag_content;
         newTag.appendChild(hiddenInput);
 
         tagContainer.insertBefore(newTag, event.target);
@@ -67,8 +80,11 @@ function addTagManually(event) {
     event.preventDefault(); // Prevent the default form submission behavior
     const tag_input = document.getElementById('tag-input');
     const tag_content = tag_input.value.trim();
-    
     if(tag_content) {
+        if(tagNameExists(tag_content)) {
+            tag_input.value = '';
+            return;
+        }
         const tagContainer = document.querySelector('.tag-container');
         const newTag = document.createElement('div');
         newTag.className = 'tag';
@@ -90,6 +106,7 @@ function addTagManually(event) {
         newTag.appendChild(hiddenInput);
         
         tagContainer.insertBefore(newTag, tag_input);
+        tag_input.value = '';
     }
 }
 

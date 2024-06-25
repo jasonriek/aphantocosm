@@ -1,0 +1,5 @@
+<% for (let article of articles) { %>
+    <a href="/articles/<%- article.category %>/<%- article.title %>"><%- toTitleString(article.title) %></a>
+    <br><br>
+<% } %>
+

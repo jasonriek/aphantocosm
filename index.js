@@ -15,6 +15,7 @@ const article_model = require('./models/articles');
 const login_router = require('./routes/login');
 const articles_router = require('./routes/articles');
 const dashboard_router = require('./routes/dashboard');
+const tags_router = require('./routes/tags');
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/aphantocosm').then(() => {
@@ -51,6 +52,7 @@ app.use(express.static('public'));
 app.use('/', login_router);
 app.use('/', articles_router);
 app.use('/', dashboard_router);
+app.use('/', tags_router);
 
 
 // MAIN PAGE

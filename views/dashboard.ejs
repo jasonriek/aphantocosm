@@ -78,7 +78,7 @@
                 </a>
 
                 <div class="navbar-nav align-items-center ms-auto">
-                    <div class="nav-item dropdown">
+                    <div class="nav-item ">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" id="account-button">
                             <img class="rounded-circle me-lg-2" src="/profiles/<%- user %>/images/<%- profile.image %>" alt="" style="width: 40px; height: 40px;">
                             <span class="d-none d-lg-inline-flex"><%- user %></span>
@@ -109,13 +109,14 @@
                                     <img id="title-image-preview" src="#" alt="Image Preview" style="display: none; width: 100px; height: auto;"/>
                                     <br><br>
                                     <label for="category">Category:</label>
-                                     <div class="dropdown dropdown-dark">
-                                        <select name="category" id="category-select" class="dropdown-select" required>
-                                            <% for( let category of categories)  { %>
-                                                <option value="<%= category.name %>"><%- category.name %></option>
-                                            <% } %>
-                                        </select>
-                                    </div>
+
+                                    <input id="category-select" class="tag-input" type="text" name="category" placeholder="Select a category" list="cat-list" required />
+                                    <datalist id="cat-list">
+                                        <% for( let category of categories)  { %>
+                                            <option value="<%= category.name %>"></option>
+                                        <% } %>
+                                    </datalist>
+               
                                     <br><br>
                                     <label for="content">Content:</label>
                                     <div id="editor-container"></div>
@@ -152,61 +153,24 @@
                                 <input class="form-control bg-dark border-0" type="text" placeholder="Enter article">
                                 <button type="button" class="btn btn-primary ms-2">Search</button>
                             </div>
+
                             <div class="d-flex align-items-center border-bottom py-2">
                                 <input class="form-check-input m-0" type="checkbox">
-                                    <div class="w-100 ms-3">
-                                                <div class="d-flex w-100 align-items-center justify-content-between">
-                                                    <span>Short task goes here...</span>
-                                                    <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center border-bottom py-2">
-                                            <input class="form-check-input m-0" type="checkbox">
-                                            <div class="w-100 ms-3">
-                                                <div class="d-flex w-100 align-items-center justify-content-between">
-                                                    <span>Short task goes here...</span>
-                                                    <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center border-bottom py-2">
-                                            <input class="form-check-input m-0" type="checkbox" checked>
-                                            <div class="w-100 ms-3">
-                                                <div class="d-flex w-100 align-items-center justify-content-between">
-                                                    <span><del>Short task goes here...</del></span>
-                                                    <button class="btn btn-sm text-primary"><i class="fa fa-times"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center border-bottom py-2">
-                                            <input class="form-check-input m-0" type="checkbox">
-                                            <div class="w-100 ms-3">
-                                                <div class="d-flex w-100 align-items-center justify-content-between">
-                                                    <span>Short task goes here...</span>
-                                                    <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center pt-2">
-                                            <input class="form-check-input m-0" type="checkbox">
-                                            <div class="w-100 ms-3">
-                                                <div class="d-flex w-100 align-items-center justify-content-between">
-                                                    <span>Short task goes here...</span>
-                                                    <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 align-items-center justify-content-between">
+                                        <span>Short task goes here...</span>
+                                        <button class="btn btn-sm"><i class="fa fa-times"></i></button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
     <!-- Widgets End -->
-    </div>
-        <a href="/logout">Logout</a>
-    </div>
+
     <script src="/js/quill_editor_posts.js"></script>
     <script src="/js/image-preview.js"></script>
     <script src="/js/utils.js"></script>
