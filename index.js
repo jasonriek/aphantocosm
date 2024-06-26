@@ -50,9 +50,9 @@ app.use(express.static('public'));
 
 // Set routes
 app.use('/', login_router);
-app.use('/', articles_router);
-app.use('/', dashboard_router);
-app.use('/', tags_router);
+app.use('/articles', articles_router);
+app.use('/dashboard', dashboard_router);
+app.use('/tags', tags_router);
 
 
 // MAIN PAGE
@@ -67,7 +67,8 @@ app.get('/', async (req, res) => {
         // Render the index page with the article IDs
         res.render('index', context);
 
-    } catch (err) {
+    } 
+    catch (err) {
         console.error('Error fetching post IDs:', err);
         res.status(500).send('Internal server error');
     }

@@ -31,7 +31,7 @@ const upload = multer({
 });
 
 // Route to get an article by category and its title.
-router.get('/articles/:category/:title', async (req, res) => {
+router.get('/:category/:title', async (req, res) => {
     let context = {};
     const category = req.params.category.toLowerCase();
     const title = utils.toURLString(req.params.title);
@@ -62,7 +62,7 @@ router.get('/articles/:category/:title', async (req, res) => {
     }
 });
 
-router.post('/article', upload.single('title-image'), [
+router.post('/', upload.single('title-image'), [
     check('title').notEmpty().withMessage('Title cannot be empty'),
     check('content').notEmpty().withMessage('Content cannot be empty')
 ], async (req, res) => {
@@ -70,7 +70,6 @@ router.post('/article', upload.single('title-image'), [
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-    console.log('test', req.body);
     const title = utils.toURLString(req.body.title);
     const content = req.body.content;
     const category = req.body.category;
@@ -89,6 +88,9 @@ router.post('/article', upload.single('title-image'), [
     let title_image = null;
     if (req.file) {
         title_image = req.file.filename;
+    } 
+    else {
+        title_image = req.body['existing-title-image'];
     }
 
     console.log('session:', req.session);
@@ -130,17 +132,33 @@ router.post('/article', upload.single('title-image'), [
     const currentDate = new Date().toISOString(); // Get the current date and time in ISO format
 
     try {
-        const newArticle = new article_model({
-            title: title,
-            category: category,
-            content: sanitizedContent,
-            user_id: userId,
-            title_image: title_image,
-            tags: tagDocs,
-            created_at: currentDate
-        });
+        // Check if an article with the same category and title already exists
+        let article = await article_model.findOne({ category: category, title: title });
 
-        await newArticle.save();
+        if (article) {
+            // Update the existing article
+            article.content = sanitizedContent;
+            article.user_id = userId;
+            article.title_image = title_image;
+            article.tags = tagDocs;
+            article.updated_at = currentDate;
+
+            await article.save();
+        } 
+        else {
+            // Create a new article
+            article = new article_model({
+                title: title,
+                category: category,
+                content: sanitizedContent,
+                user_id: userId,
+                title_image: title_image,
+                tags: tagDocs,
+                created_at: currentDate
+            });
+
+            await article.save();
+        }
         res.redirect('/dashboard');
     } 
     catch (err) {
