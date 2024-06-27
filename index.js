@@ -59,6 +59,8 @@ app.use('/tags', tags_router);
 // Route to get all post IDs and render the index page
 app.get('/', async (req, res) => {
     let context = {};
+
+
     try {
         // Fetch all article IDs from the posts collection
         const articles = await article_model.find({}).exec();

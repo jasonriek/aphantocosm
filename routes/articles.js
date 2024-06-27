@@ -30,6 +30,12 @@ const upload = multer({
     }
 });
 
+// Ensure the upload directory exists
+const upload_dir = path.join(__dirname, '..', 'public', 'uploads');
+if (!fs.existsSync(upload_dir)) {
+    fs.mkdirSync(upload_dir, { recursive: true });
+}
+
 // Route to get an article by category and its title.
 router.get('/:category/:title', async (req, res) => {
     let context = {};
@@ -108,7 +114,7 @@ router.post('/', upload.single('title-image'), [
             // Generate a unique filename
             const filename = `image_${Date.now()}_${index}.png`;
             // Save image to the 'uploads' folder
-            fs.writeFileSync(path.join(__dirname, 'public', 'uploads', filename), base64Data, 'base64');
+            fs.writeFileSync(path.join(upload_dir, filename), base64Data, 'base64');
 
             // Return the filename or path if needed
             return filename;

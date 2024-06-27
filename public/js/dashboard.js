@@ -51,35 +51,52 @@ function tagNameExists(tag_name) {
 
 
 function addTag(event) {
-    const tag_content = event.target.value.trim();
+    let tag_content = event.target.value.trim();
     if (event.key === 'Enter' && tag_content !== '') {
         event.preventDefault(); // Prevent the default form submission behavior
-        if(tagNameExists(tag_content)) {
-            tag_input.value = '';
-            return;
-        }
-        const tagContainer = document.querySelector('.tag-container');
-        const newTag = document.createElement('div');
-        newTag.className = 'tag';
+        fetch('/dashboard/special_tag', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ tag: tag_content })
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.special_tag) {
+                tag_content = result.special_tag;
 
-        const tagText = document.createElement('span');
-        tagText.innerText = tag_content;
-        newTag.appendChild(tagText);
-
-        const removeButton = document.createElement('button');
-        removeButton.className = 'remove-tag';
-        removeButton.innerText = 'x';
-        removeButton.setAttribute('onclick', 'removeTag(this)');
-        newTag.appendChild(removeButton);
-
-        const hiddenInput = document.createElement('input');
-        hiddenInput.type = 'hidden';
-        hiddenInput.name = 'tags';
-        hiddenInput.value = tag_content;
-        newTag.appendChild(hiddenInput);
-
-        tagContainer.insertBefore(newTag, event.target);
-        event.target.value = '';
+            } 
+            else {
+                console.log('Special tag not found');
+            }
+            if(tagNameExists(tag_content)) {
+                tag_input.value = '';
+                return;
+            }
+            const tagContainer = document.querySelector('.tag-container');
+            const newTag = document.createElement('div');
+            newTag.className = 'tag';
+            const tagText = document.createElement('span');
+            tagText.innerText = tag_content;
+            newTag.appendChild(tagText);
+            const removeButton = document.createElement('button');
+            removeButton.className = 'remove-tag';
+            removeButton.innerText = 'x';
+            removeButton.setAttribute('onclick', 'removeTag(this)');
+            newTag.appendChild(removeButton);
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'tags';
+            hiddenInput.value = tag_content;
+            newTag.appendChild(hiddenInput);
+            tagContainer.insertBefore(newTag, event.target);
+            event.target.value = '';
+        })
+        .catch(error => {
+            console.log(`setSpecialTag Error: ${error}`);
+            event.target.value = '';
+        });
     }
 }
 
@@ -88,32 +105,53 @@ function addTagManually(event) {
     const tag_input = document.getElementById('tag-input');
     const tag_content = tag_input.value.trim();
     if(tag_content) {
-        if(tagNameExists(tag_content)) {
+        fetch('/dashboard/special_tag', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ tag: tag_content })
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.special_tag) {
+                tag_content = result.special_tag;
+
+            } 
+            else {
+                console.log('Special tag not found');
+            }
+            if(tagNameExists(tag_content)) {
+                tag_input.value = '';
+                return;
+            }
+            const tagContainer = document.querySelector('.tag-container');
+            const newTag = document.createElement('div');
+            newTag.className = 'tag';
+
+            const tagText = document.createElement('span');
+            tagText.innerText = tag_content;
+            newTag.appendChild(tagText);
+
+            const removeButton = document.createElement('button');
+            removeButton.className = 'remove-tag';
+            removeButton.innerText = 'x';
+            removeButton.setAttribute('onclick', 'removeTag(this)');
+            newTag.appendChild(removeButton);
+
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'tags';
+            hiddenInput.value = tag_content;
+            newTag.appendChild(hiddenInput);
+            
+            tagContainer.insertBefore(newTag, tag_input);
             tag_input.value = '';
-            return;
-        }
-        const tagContainer = document.querySelector('.tag-container');
-        const newTag = document.createElement('div');
-        newTag.className = 'tag';
-
-        const tagText = document.createElement('span');
-        tagText.innerText = tag_content;
-        newTag.appendChild(tagText);
-
-        const removeButton = document.createElement('button');
-        removeButton.className = 'remove-tag';
-        removeButton.innerText = 'x';
-        removeButton.setAttribute('onclick', 'removeTag(this)');
-        newTag.appendChild(removeButton);
-
-        const hiddenInput = document.createElement('input');
-        hiddenInput.type = 'hidden';
-        hiddenInput.name = 'tags';
-        hiddenInput.value = tag_content;
-        newTag.appendChild(hiddenInput);
-        
-        tagContainer.insertBefore(newTag, tag_input);
-        tag_input.value = '';
+        })
+        .catch(error => {
+            console.log(`setSpecialTag Error: ${error}`);
+            event.target.value = '';
+        });
     }
 }
 
