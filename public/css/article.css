@@ -11,6 +11,12 @@ body {
     overflow: auto;
 }
 
+.header-title {
+    position: relative; /* Ensure it has a positioning context */
+    z-index: 1000;      /* Set a high z-index value */
+    cursor: pointer;
+}
+
 h1 {
     background-color: #46bef5;
     padding: 0 5px 3px 5px;
@@ -196,6 +202,19 @@ footer p {
     #shot .options {
         right: -210px;
     }
+}
+
+.ql-align-center {
+    text-align: center;
+}
+
+.ql-size-huge {
+    font-size: 64px;
+}
+
+.ql-size-small {
+    font-size: 12px;
+    color: #999999;
 }
 
 @media (max-width: 768px) {

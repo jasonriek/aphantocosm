@@ -111,14 +111,13 @@
                                     <br><br>
                                     <img id="title-image-preview" src="#" alt="Image Preview" style="display: none; width: 100px; height: auto;"/>
                                     <br><br>
-                                    <label for="category">Category:</label>
-
-                                    <input id="category-select" class="tag-input" type="text" name="category" placeholder="Select a category" list="cat-list" required />
-                                    <datalist id="cat-list">
-                                        <% for( let category of categories)  { %>
-                                            <option value="<%= category.name %>"></option>
+                                    <label for="category-select">Category:</label>
+                                    <select id="category-select" class="tag-input" name="category" required>
+                                        <option value="" disabled selected>Select a category</option>
+                                        <% for (let category of categories) { %>
+                                            <option value="<%= category.name %>"><%= category.name %></option>
                                         <% } %>
-                                    </datalist>
+                                    </select>
                
                                     <br><br>
                                     <label for="content">Content:</label>

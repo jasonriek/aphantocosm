@@ -291,7 +291,7 @@ async function editArticle(category, title) {
         const article = await response.json();
 
         document.querySelector('input[name="title"]').value = article.title;
-        document.querySelector('input[name="category"]').value = article.category;
+        document.getElementById('category-select').value = article.category;
         document.querySelector('input[name="content"]').value = article.content;
 
         // Set content in Quill editor

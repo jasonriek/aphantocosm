@@ -6,17 +6,18 @@
     <link rel="icon" href="/images/aphantocosm.ico" type="image/x-icon"/>
     <title>Aphantocosm - <%- article.title %></title>
     <link rel="stylesheet" href="/css/article.css" />
+    <link rel="stylesheet" href="/css/quill.core.css" />
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
-        <h2>Aphantocosm</h2>
+        <h2 class="header-title" onclick="javascript:window.location='/'">Aphantocosm</h2>
         <h3><%- article.category %></h3>
     </header>
 <div id="shot">
     <div class="description">
         <h1><%- article.title %></h1>
-        <p><%- article.user_id %></p><p><%- article.created_at %></p>
+        <p><%- article.user_id %></p><p><%- date %></p>
         <canvas id="world"></canvas>
         <canvas class="grain"></canvas>
     </div>

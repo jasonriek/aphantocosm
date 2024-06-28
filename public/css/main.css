@@ -7,6 +7,12 @@ body {
     padding: 0;
 }
 
+.header-title {
+    position: relative; /* Ensure it has a positioning context */
+    z-index: 1000;      /* Set a high z-index value */
+    cursor: pointer;
+}
+
 header {
     height: 200px;
     width: 100%;
@@ -28,6 +34,11 @@ section {
 
 main {
     padding: 20px;
+}
+
+#map {
+    height: 600px;
+    width: 100%;
 }
 
 footer {

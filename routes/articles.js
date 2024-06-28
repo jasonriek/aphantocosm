@@ -6,6 +6,7 @@ const { check, validationResult } = require('express-validator');
 const utils = require('../service/utils');
 const path = require('path');
 const multer = require('multer');
+const moment = require('moment-timezone');
 router.use(body_parser.json());
 
 // Models
@@ -42,27 +43,39 @@ router.get('/:category/:title', async (req, res) => {
     const category = req.params.category.toLowerCase();
     const title = utils.toURLString(req.params.title);
     
-
     try {
         // Fetch the article by ID
         //const article = await article.findById(article_id).exec();
-        const article = await article_model.findOne({category: category, title: title});
+        console.log('category:', category, ' title:', title);
+        let article = await article_model.findOne({category: category, title: title});
         context.article = article;
 
-
+        console.log('article.tags:', article);
         const tags = await tag_model.find({ tag_id: { $in: article.tags } }).select('name');
-        article.tags = tags;
+        context.article.tags = tags;
 
         if (!article) {
             return res.status(404).send('Article not found');
         }
         
+        let created_at = moment(article.created_at);
+        // Specify the desired time zone
+        const timeZone = 'America/Los_Angeles';
+
+        // Convert and format the date
+        const formatted_date = created_at.tz(timeZone).format('ddd MMM DD YYYY hh:mm:ss A z');
+        console.log(formatted_date);
+
         console.log("article here:", article);
 
-        article.title = utils.toTitleString(title);
+        context.article.title = utils.toTitleString(title);
+        context.date = formatted_date;
+        console.log('formatted_date:', formatted_date);
+
         // Render the article
         res.render('article', context);
-    } catch (err) {
+    } 
+    catch (err) {
         console.error('Error fetching article:', err);
         res.status(500).send('Internal server error');
     }
