@@ -39,8 +39,32 @@ router.get('/', authMiddleware, async (req, res) => {
 });
 
 router.get('/articles', authMiddleware, async (req, res) => {
-    const articles = await article_model.find({user_id: user}).exec();
-    res.json(articles);
+    const user = req.session.user; // Assuming the user ID is available in req.user
+    const page = parseInt(req.query.page) || 1;
+    const limit = 5; // Number of articles per page
+    const searchQuery = req.query.search || '';
+
+    try {
+        const query = searchQuery ? { title: new RegExp(searchQuery, 'i') } : {};
+        const articles = await article_model.find({ $and: [{ user_id: user }, query] })
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .exec();
+        
+        const totalArticles = await article_model.countDocuments({ user_id: user }); // Get total number of articles for pagination
+        const totalPages = Math.ceil(totalArticles / limit);
+
+        console.log('total articles:', totalArticles);
+        console.log('articles:', articles);
+
+        res.json({ 
+            articles, 
+            currentPage: page, 
+            totalPages 
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching articles' });
+    }
 });
 
 router.get('/articles/:category/:title', authMiddleware, async (req, res) => {
@@ -68,6 +92,24 @@ router.get('/articles/:category/:title', authMiddleware, async (req, res) => {
     }
 });
 
+router.delete('/articles/:category/:title', authMiddleware, async (req, res) => {
+    const category = req.params.category.toLowerCase();
+    const title = utils.toURLString(req.params.title);
+
+    try {
+        const article = await article_model.findOneAndDelete({ category: category, title: title });
+
+        if (!article) {
+            return res.status(404).send('Article not found');
+        }
+
+        res.json({ message: 'Article deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting article:', err);
+        res.status(500).send('Internal server error');
+    }
+});
+
 router.get('/special_tag/:tag', authMiddleware, async (req, res) => {
     let special_tag = null;
     try {
@@ -88,7 +130,12 @@ router.post('/special_tag', authMiddleware, async (req, res) => {
     let special_tag = null;
     try {
         const user_tag = req.body.tag.trim().toLowerCase();
-        const special_tags = await special_tag_model.findOne({ tags: user_tag });
+        const special_tags = await special_tag_model.findOne({ 
+            $or: [
+                {tags: user_tag},
+                {name: user_tag}
+            ]
+        }).collation({ locale: 'en', strength: 2 }).exec();
         if (special_tags) {
             special_tag = special_tags.name;
         }

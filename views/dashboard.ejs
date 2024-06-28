@@ -103,8 +103,10 @@
                                 <form action="/articles" method="post" enctype="multipart/form-data">
                                     <input type="text" class="title-input" placeholder="Enter Title..." name="title" required/>
                                     <br><br>
-                                    <label for="title-image">Title Image:</label>
+                                    <label for="title-image-input" class="custom-file-upload">Select a title image</label>
                                     <input id="title-image-input" type="file" name="title-image" accept="image/*">
+
+
                                     <input type="hidden" name="existing-title-image" id="existing-title-image">
                                     <br><br>
                                     <img id="title-image-preview" src="#" alt="Image Preview" style="display: none; width: 100px; height: auto;"/>
@@ -145,23 +147,25 @@
                 <br>
                 <div class="row g-4">
                     <div class="col-sm-12 col-md-6 col-xl-4">
-                        <div class="h-100 bg-secondary rounded p-4">
+                        <div class="h-100 bg-secondary rounded p-4" id="article-container">
                             <div class="d-flex align-items-center justify-content-between mb-4">
                                 <h6 class="mb-0">Articles</h6>
                             </div>
-                        
-                            <% for (let article of articles) { %>
-                                <div class="d-flex align-items-center border-bottom py-2">
-                                    <div class="w-100 ms-3">
-                                        <div class="d-flex w-100 align-items-center justify-content-between">
-                                            <span><a href="/articles/<%- article.category %>/<%- article.title %>" target="_blank"><%- toTitleString(article.title) %></a></span>
-                                            <button class="btn btn-sm" title="Edit" onclick="handleEditButtonClick('<%- article.category %>', '<%- article.title %>')"><i class="fa fa-edit"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            <% } %>
+                            <div class="d-flex mb-2">
+                                <input class="form-control bg-dark border-0" type="text" id="search-article" placeholder="Search article">
+                                <button type="button" class="btn btn-primary ms-2" id="search-article-button">Search</button>
+                            </div>
+                            <!-- Articles will be inserted here by JavaScript -->
+                            <div id="articles-container"></div>
 
-
+                            <!-- Pagination Controls -->
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center mt-3" id="pagination-controls">
+                                    <li class="page-item"><a class="page-link" href="#" id="prev-page">&laquo;</a></li>
+                                    <!-- Page number links will be inserted here by JavaScript -->
+                                    <li class="page-item"><a class="page-link" href="#" id="next-page">&raquo;</a></li>
+                                </ul>
+                            </nav>
 
                         </div>
                     </div>
@@ -192,6 +196,27 @@
         </div>
     </div>
 
+    <div id="delete-modal" class="edit-modal">
+
+        <!-- Delete Modal content -->
+        <div class="edit-modal-content">
+            <div class="edit-modal-header">
+                <br>
+                <h5>Confirm Delete</h5>
+            </div>
+            <div class="edit-modal-body">
+                <div class="warning-logo float-left"></div>
+                Are you sure you want to delete "<span id='delete-modal-article-title'></span>"?
+                <br>
+                <label for="delete-confirm-title">Please type the article title to confirm:</label>
+                <input type="text" id="delete-confirm-article-title" name="delete-confirm-article-title" placeholder="Article title">
+            </div>
+            <div class="edit-modal-footer">
+                <a class="edit-modal-link" id="delete-link" href="javascript:void(0);" style="margin-right: 4px;">Delete</a>
+                <a class="edit-modal-link" id="delete-cancel-link" href="javascript:void(0);">Cancel</a>
+            </div>
+        </div>
+    </div>
 
     <script src="/js/quill_editor_posts.js"></script>
     <script src="/js/image-preview.js"></script>

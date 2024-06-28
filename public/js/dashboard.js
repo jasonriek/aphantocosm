@@ -1,6 +1,83 @@
+function scrollToBottom() {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+}
+
+const fetchArticles = async (page, scroll_to_bottom=true, searchQuery='') => {
+    let limit = 5;
+    try {
+        const response = await fetch(`/dashboard/articles?page=${page}&limit=${limit}&search=${encodeURIComponent(searchQuery)}`);
+        const data = await response.json();
+        
+        const articlesContainer = document.getElementById('articles-container');
+        articlesContainer.innerHTML = '';
+        
+        data.articles.forEach(article => {
+            const articleDiv = document.createElement('div');
+            articleDiv.className = 'd-flex align-items-center border-bottom py-2';
+            articleDiv.innerHTML = `
+                <div class="w-100 ms-3">
+                    <div class="d-flex justify-content-end">
+                    <div class="flex-grow-1">
+                        <span><a href="/articles/${article.category}/${article.title}" target="_blank">${toTitleString(article.title)}</a></span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-sm me-2" title="Edit" onclick="handleEditButtonClick('${article.category}', '${article.title}')"><i class="fa fa-edit"></i></button>
+                        <button class="btn btn-sm" title="Delete" onclick="handleDeleteButtonClick('${article.category}', '${article.title}')"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+            `;
+            articlesContainer.appendChild(articleDiv);
+        });
+
+        // Update pagination controls
+        const paginationControls = document.getElementById('pagination-controls');
+        paginationControls.innerHTML = `
+            <li class="page-item"><a class="page-link" href="#" id="prev-page">&laquo;</a></li>
+        `;
+
+        for (let i = 1; i <= data.totalPages; i++) {
+            const pageItem = document.createElement('li');
+            pageItem.className = `page-item ${i === page ? 'active' : ''}`;
+            pageItem.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+            pageItem.addEventListener('click', (e) => {
+                e.preventDefault();
+                fetchArticles(i, true, searchQuery);
+            });
+            paginationControls.appendChild(pageItem);
+        }
+
+        const nextPageItem = document.createElement('li');
+        nextPageItem.className = 'page-item';
+        nextPageItem.innerHTML = `<a class="page-link" href="#" id="next-page">&raquo;</a>`;
+        nextPageItem.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (page < data.totalPages) fetchArticles(page + 1, true, searchQuery);
+        });
+        paginationControls.appendChild(nextPageItem);
+
+        document.getElementById('prev-page').addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentPage > 1) fetchArticles(currentPage - 1, true, searchQuery);
+        });
+
+        document.getElementById('prev-page').parentElement.classList.toggle('disabled', page === 1);
+        nextPageItem.classList.toggle('disabled', page === data.totalPages);
+
+        currentPage = page;
+
+        // Scroll to bottom after fetching articles
+        if(scroll_to_bottom) {
+            scrollToBottom();
+        }
+    } 
+    catch (error) {
+        console.error('Error fetching articles:', error);
+    }
+};
+
 document.addEventListener("DOMContentLoaded", function() {
     // Select the spinner element by its ID
-    var spinner = document.getElementById("spinner");
+    let spinner = document.getElementById("spinner");
 
     // Remove the 'show' class to hide the spinner
     if (spinner) {
@@ -29,7 +106,47 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    document.getElementById('search-article-button').addEventListener('click', () => {
+        const searchQuery = document.getElementById('search-article').value;
+        fetchArticles(1, true, searchQuery); // Start from the first page for a new search
+    });
+
+    document.getElementById('search-article').addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent the default form submission behavior
+            const searchQuery = event.target.value;
+            fetchArticles(1, true, searchQuery); // Start from the first page for a new search
+        }
+    });
+
+    // Initial fetch
+    fetchArticles(1, false);
 });
+
+// Function to handle the edit button click
+function handleEditButtonClick(category, title) {
+    // Open the modal
+    openModal();
+
+    // Set up the confirmation button click event
+    const confirmEditButton = document.getElementById('edit-link');
+    const cancelEditButton = document.getElementById('edit-cancel-link');
+    const edit_modal_article_title = document.getElementById('edit-modal-article-title');
+    edit_modal_article_title.innerText = toTitleString(title);
+
+    cancelEditButton.onclick = () => {
+        // Close the modal
+        document.getElementById('edit-modal').style.display = 'none';
+    }
+
+    confirmEditButton.onclick = () => {
+        // Close the modal
+        document.getElementById('edit-modal').style.display = 'none';
+
+        // Call the editArticle function
+        editArticle(category, title);
+    }
+}
 
 function clearAllTags() {
     const tagContainer = document.querySelector('.tag-container');
@@ -71,7 +188,7 @@ function addTag(event) {
                 console.log('Special tag not found');
             }
             if(tagNameExists(tag_content)) {
-                tag_input.value = '';
+                event.target.value = '';
                 return;
             }
             const tagContainer = document.querySelector('.tag-container');
@@ -103,7 +220,7 @@ function addTag(event) {
 function addTagManually(event) {
     event.preventDefault(); // Prevent the default form submission behavior
     const tag_input = document.getElementById('tag-input');
-    const tag_content = tag_input.value.trim();
+    let tag_content = tag_input.value.trim();
     if(tag_content) {
         fetch('/dashboard/special_tag', {
             method: 'POST',
@@ -150,7 +267,7 @@ function addTagManually(event) {
         })
         .catch(error => {
             console.log(`setSpecialTag Error: ${error}`);
-            event.target.value = '';
+            tag_input.value = '';
         });
     }
 }
@@ -226,6 +343,62 @@ async function editArticle(category, title) {
         document.querySelector('form').scrollIntoView({ behavior: 'smooth' });
     } catch (error) {
         console.error('Error fetching article:', error);
+    }
+}
+
+function openDeleteModal() {
+    document.getElementById('delete-modal').style.display = 'block';
+}
+
+function handleDeleteButtonClick(category, title) {
+    // Open the delete modal
+    openDeleteModal();
+
+    // Set up the confirmation button click event
+    const confirmDeleteButton = document.getElementById('delete-link');
+    const cancelDeleteButton = document.getElementById('delete-cancel-link');
+    const deleteModalArticleTitle = document.getElementById('delete-modal-article-title');
+
+    let deleteArticleCategory = category;
+    let deleteArticleTitle = toTitleString(title);
+
+    deleteModalArticleTitle.innerText = toTitleString(title);
+
+    cancelDeleteButton.onclick = () => {
+        // Close the modal
+        document.getElementById('delete-modal').style.display = 'none';
+    };
+
+    confirmDeleteButton.onclick = () => {
+        const articleTitleInput = document.getElementById('delete-confirm-article-title').value;
+        if (articleTitleInput !== deleteArticleTitle) {
+            alert('Article title does not match. Please enter the correct article title to confirm.');
+            return;
+        }
+
+        // Close the modal
+        document.getElementById('delete-modal').style.display = 'none';
+
+        // Call the deleteArticle function
+        deleteArticle(deleteArticleCategory, deleteArticleTitle);
+    };
+}
+
+async function deleteArticle(category, title) {
+    try {
+        const response = await fetch(`/dashboard/articles/${category}/${title}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if (response.ok) {
+            fetchArticles(currentPage); // Refresh the articles list
+        } else {
+            console.error('Failed to delete article');
+        }
+    } catch (error) {
+        console.error('Error:', error);
     }
 }
 
