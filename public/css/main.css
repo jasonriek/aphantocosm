@@ -1,0 +1,57 @@
+body {
+    font-family: "Rajdhani", sans-serif;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.header-title {
+    position: relative; /* Ensure it has a positioning context */
+    z-index: 1000;      /* Set a high z-index value */
+    cursor: pointer;
+}
+
+header {
+    height: 200px;
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    margin: 0;
+    top: 0;
+    background-color: #111;
+}
+
+header p {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+section {
+    margin-top: 250px;
+}
+
+main {
+    padding: 20px;
+}
+
+#map {
+    height: 600px;
+    width: 100%;
+}
+
+footer {
+    text-align: center;
+    background-color: #111;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+footer p {
+    opacity: 0.3;
+    margin: 0;
+    font-size: 0.6em;
+}

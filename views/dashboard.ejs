@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/aphantocosm.ico" type="image/x-icon"/>
+    <link href="/css/fontawesome.css" rel="stylesheet" />
+    <link href="/css/brands.css" rel="stylesheet" />
+    <link href="/css/solid.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/w3.css" />
+    <link rel="stylesheet" href="/css/quill.snow.css" />
+    <title>Aphantocosm Dashboard</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link href="/css/all.min.css" rel="stylesheet">
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <script src="/js/quill.js"></script>
+    <script src="/js/image-resize.min.js"></script>
+    <script src="/js/quill.imageCompressor.min.js"></script>
+
+</head>
+<body>
+    <div class="container-fluid position-relative d-flex p-0">
+                <!-- Spinner Start -->
+                <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+                    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+
+                        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-secondary navbar-dark">
+                <a href="/" target="_blank" class="navbar-brand mx-4 mb-3">
+                    <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>Aphantocosm</h3>
+                </a>
+                <div class="d-flex align-items-center ms-4 mb-4">
+                    <div class="position-relative">
+                        <img class="rounded-circle" src="/profiles/<%- user %>/images/<%- profile.image %>" alt="" style="width: 40px; height: 40px;">
+                        <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+                    </div>
+                    <div class="ms-3">
+                        <h6 class="mb-0"><%- user %></h6>
+                        <span>Contributer</span>
+                    </div>
+                </div>
+                <div class="navbar-nav w-100">
+                    <a href="/dashboard" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="signin.html" class="dropdown-item">Sign In</a>
+                            <a href="signup.html" class="dropdown-item">Sign Up</a>
+                            <a href="404.html" class="dropdown-item">404 Error</a>
+                            <a href="blank.html" class="dropdown-item">Blank Page</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!-- Sidebar End -->
+
+
+        
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
+                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                    <h2 class="text-primary mb-0"><i class="fa fa-user-edit"></i></h2>
+                </a>
+                <a href="#" class="sidebar-toggler flex-shrink-0">
+                    <i class="fa fa-bars"></i>
+                </a>
+
+                <div class="navbar-nav align-items-center ms-auto">
+                    <div class="nav-item ">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" id="account-button">
+                            <img class="rounded-circle me-lg-2" src="/profiles/<%- user %>/images/<%- profile.image %>" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex"><%- user %></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0" id="account-menu">
+                            <a href="#" class="dropdown-item">My Profile</a>
+                            <a href="#" class="dropdown-item">Settings</a>
+                            <a href="/logout" class="dropdown-item">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Navbar End -->
+
+            <!-- Widgets Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-lg-12 col-lg-6 col-lg-4">
+                        <% if (user && access_level === 1) { %>
+                        <!-- Display blog writing tools only for certain users -->
+                        <div class="h-100 bg-secondary rounded p-4">
+                                <form action="/articles" method="post" enctype="multipart/form-data">
+                                    <input type="text" class="title-input" placeholder="Enter Title..." name="title" required/>
+                                    <br><br>
+                                    <label for="title-image-input" class="custom-file-upload">Select a title image</label>
+                                    <input id="title-image-input" type="file" name="title-image" accept="image/*">
+
+
+                                    <input type="hidden" name="existing-title-image" id="existing-title-image">
+                                    <br><br>
+                                    <img id="title-image-preview" src="#" alt="Image Preview" style="display: none; width: 100px; height: auto;"/>
+                                    <br><br>
+                                    <label for="category-select">Category:</label>
+                                    <select id="category-select" class="tag-input" name="category" required>
+                                        <option value="" disabled selected>Select a category</option>
+                                        <% for (let category of categories) { %>
+                                            <option value="<%= category.name %>"><%= category.name %></option>
+                                        <% } %>
+                                    </select>
+               
+                                    <br><br>
+                                    <label for="content">Content:</label>
+                                    <div id="editor-container"></div>
+                                    <input type="hidden" name="content" id="hidden-editor-input">
+                                    <br>
+                                    <label for="tags">Tags:</label>
+                                    <div class="tag-container">
+                                        <input id="tag-input" type="text" class="tag-input" placeholder="Add a tag" list="tag-list" onkeypress="addTag(event)" />
+                                        <datalist id="tag-list">
+                                            <% for (let tag of tags) { %>
+                                                <option value="<%- tag.name %>"></option>
+                                            <% } %>
+                                        </datalist>
+                                        <button class="add-tag-button" onclick="addTagManually(event)" title="Add tag">+</button>
+                                    </div>
+                                    <br>
+                                    <div class="inputbox">
+                                        <input type="submit" value="Post" id="btn" required>
+                                    </div>
+                                </form>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+                <br>
+                <div class="row g-4">
+                    <div class="col-sm-12 col-md-6 col-xl-4">
+                        <div class="h-100 bg-secondary rounded p-4" id="article-container">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">Articles</h6>
+                            </div>
+                            <div class="d-flex mb-2">
+                                <input class="form-control bg-dark border-0" type="text" id="search-article" placeholder="Search article">
+                                <button type="button" class="btn btn-primary ms-2" id="search-article-button">Search</button>
+                            </div>
+                            <!-- Articles will be inserted here by JavaScript -->
+                            <div id="articles-container"></div>
+
+                            <!-- Pagination Controls -->
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center mt-3" id="pagination-controls">
+                                    <li class="page-item"><a class="page-link" href="#" id="prev-page">&laquo;</a></li>
+                                    <!-- Page number links will be inserted here by JavaScript -->
+                                    <li class="page-item"><a class="page-link" href="#" id="next-page">&raquo;</a></li>
+                                </ul>
+                            </nav>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Widgets End -->
+
+    <!-- Modal Structure -->
+    <div id="edit-modal" class="edit-modal">
+
+        <!-- Save Modal content -->
+        <div class="edit-modal-content">
+          <div class="edit-modal-header">
+            <br>
+            <h5>Confirm Edit</h5>
+          </div>
+          <div class="edit-modal-body">
+            <div class="warning-logo float-left"></div>
+              <br>
+              Are you sure you want to edit "<span id='edit-modal-article-title'></span>"?
+          </div>
+          <div class="edit-modal-footer">
+            <a class="edit-modal-link" id="edit-link" href="javascript:void(0);" style="margin-right: 4px;">Enter</a>
+              <a class="edit-modal-link" id="edit-cancel-link" href="javascript:void(0);">Cancel</a>
+           </div>
+        </div>
+    </div>
+
+    <div id="delete-modal" class="edit-modal">
+
+        <!-- Delete Modal content -->
+        <div class="edit-modal-content">
+            <div class="edit-modal-header">
+                <br>
+                <h5>Confirm Delete</h5>
+            </div>
+            <div class="edit-modal-body">
+                <div class="warning-logo float-left"></div>
+                Are you sure you want to delete "<span id='delete-modal-article-title'></span>"?
+                <br>
+                <label for="delete-confirm-title">Please type the article title to confirm:</label>
+                <input type="text" id="delete-confirm-article-title" name="delete-confirm-article-title" placeholder="Article title">
+            </div>
+            <div class="edit-modal-footer">
+                <a class="edit-modal-link" id="delete-link" href="javascript:void(0);" style="margin-right: 4px;">Delete</a>
+                <a class="edit-modal-link" id="delete-cancel-link" href="javascript:void(0);">Cancel</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/quill_editor_posts.js"></script>
+    <script src="/js/image-preview.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>

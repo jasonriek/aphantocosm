@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Static Grainy Effect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        
+        body {
+            background: #000000;
+            display: flex;
+            height: 100vh;
+            font-family: "Rajdhani", sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+        }
+
+        h1 {
+            background-color: #46bef5;
+            padding: 0 5px 3px 5px;
+            color: #111111;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 32px;
+            letter-spacing: 2px;
+            margin: 20px 0 10px;
+            border: 1px #46bef5 solid;
+            border-radius: 5px;
+        }
+
+        h1, p, #shot .title::before {
+            margin-top: 250px;
+            font-weight: 500;
+        }
+
+        p, #shot .title::before {
+            margin: 0 0 10px 0;
+            letter-spacing: 1px;
+        }
+
+        a {
+            color: #4652f5;
+        }
+        a:hover {
+            background: #46bef5;
+            color: #111;
+            text-decoration: none;
+        }
+
+        #shot {
+            width: 700px;
+            margin: auto;
+            position: relative;
+            padding-bottom: 100px;
+        }
+        #shot .card {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            background: linear-gradient(0deg, rgba(70, 225, 245, 0.1) 50%, rgba(17, 17, 17, 0) 100%);
+            /*border: 1px #46bef5 solid;*/
+            border-radius: 5px;
+        }
+        #shot .card #component {
+            font-family: 'Rajdhani', sans-serif;
+            padding: 30px;
+        }
+
+        #shot .options {
+            width: 200px;
+            height: auto;
+            display: flex;
+            flex-wrap: wrap;
+            position: absolute;
+            top: 0;
+            right: -220px;
+        }
+        #shot .options button {
+            height: 40px;
+            padding: 0 10px;
+            margin: 0 10px 15px 0;
+            border: 2px #111 solid;
+            outline: 1px #46bef5 solid;
+            background-color: transparent;
+            font-size: 14px;
+            letter-spacing: 1px;
+            color: #fff;
+            cursor: pointer;
+            transition: 300ms all ease-out;
+        }
+        #shot .options button:hover, #shot .options button:focus, #shot .options button.active {
+            background-color: rgba(70, 225, 245, 0.5);
+        }
+        #shot .options button.active {
+            border: 2px #46bef5 solid;
+            background-color: #46bef5;
+            color: #111111;
+        }
+
+        .grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        #world {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        header {
+            height: 200px;
+            width: 100%;
+            position: absolute;
+            text-align: center;
+            margin: 0;
+            top: 0;
+            background-color: #111;
+        }
+
+        header p {
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        footer {
+            text-align: center;
+            background-color: #111;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        footer p {
+            opacity: 0.3;
+            margin: 0;
+            font-size: 0.6em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>Aphantocosm</h2>
+    </header>
+<div id="shot">
+    <div class="description">
+        <h1>Why are UFOs Sexy?</h1>
+        <p>SpydrXIII</p>
+        <canvas id="world"></canvas>
+        <canvas class="grain"></canvas>
+    </div>
+    <div class="card">
+      <div id="component">
+        <p>Ladies and gentlemen, hold onto your tinfoil hats because we're diving deep into the cosmic conundrum of why UFOs are not just unidentified flying objects but undeniably flying off the charts in sex appeal. Forget interstellar diplomacy or advanced technology; we're talking about the raw, magnetic allure of those mysterious spacecraft. Buckle up, because this ride is out of this world!</p>
+
+        <h2>1. The Ultimate Enigma: Mysteriousness is Hot</h2>
+        <p>Who can resist the allure of a little mystery? UFOs are like the James Bond of the skies, appearing out of nowhere, shrouded in secrecy, and leaving us with more questions than answers. They’re the celestial equivalent of that cool, aloof stranger at the bar who disappears before you can get their number. Mysteriousness? Check. Intrigue? Double-check.</p>
+
+        <h2>2. Defying Gravity: Literally Raising the Bar</h2>
+        <p>Let’s be honest; there's something undeniably attractive about defying the laws of physics. UFOs float effortlessly, zip through the air with unmatched agility, and pull off maneuvers that make even the best fighter jets look like clunky kites. It’s like watching an acrobat in a Cirque du Soleil performance, only sexier because it’s happening miles above the Earth.</p>
+
+        <h2>3. Lights, Colors, Action: A Cosmic Light Show</h2>
+        <p>Forget candlelit dinners; UFOs bring their own light show to the party. Those vibrant, pulsating lights are like the universe's own disco ball, casting a mesmerizing glow that could make even the most mundane cornfield look like Studio 54. It's a dazzling display of cosmic charisma that leaves us starry-eyed and swooning.</p>
+
+        <h2>4. Alien Chic: Fashion Forward and Futuristic</h2>
+        <p>If fashion is about making bold statements, then UFOs are the haute couture of the cosmos. Sleek, aerodynamic designs, shimmering metallic finishes, and the occasional touch of the bizarre—UFOs are the ultimate trendsetters. Move over, Paris and Milan; the next fashion week should be held in Roswell.</p>
+
+        <h2>5. The Promise of Adventure: Spontaneous and Thrilling</h2>
+        <p>What’s sexier than the promise of adventure? UFOs are the epitome of spontaneity, whisking people away for interstellar joyrides (or at least, that's what we like to imagine). They offer the tantalizing possibility of exploration, discovery, and maybe even a close encounter of the romantic kind. Beam us up, Scotty—we’re ready for an adventure!</p>
+
+        <h2>6. The Forbidden Factor: Taboo and Tempting</h2>
+        <p>There’s an undeniable allure to the forbidden. UFOs are shrouded in government secrecy and public skepticism, making them the ultimate forbidden fruit. Whether it’s Area 51’s clandestine allure or the tantalizing tales of abductions, UFOs tap into our most primal desires for the unknown and the off-limits. It's the celestial equivalent of sneaking into a forbidden club.</p>
+
+        <h2>7. Galactic Gossip: The Talk of the Universe</h2>
+        <p>Let’s not forget the gossip factor. UFOs are the celebrities of the cosmos, constantly making headlines and stirring up debates. They’re the Kardashians of the sky, always keeping us on our toes with their latest appearance or scandal. And let’s face it, who doesn’t love a little galactic gossip?</p>
+
+        <p>In conclusion, UFOs have all the makings of an interstellar heartthrob. They’re mysterious, gravity-defying, visually stunning, fashion-forward, adventurous, taboo, and the center of cosmic gossip. So next time you look up at the night sky, remember: you're not just searching for life beyond Earth—you’re looking for a little extraterrestrial eye candy.</p>   
+      </div>
+    </div>
+
+    <div class="options">
+
+    </div>
+  </div>
+  <footer>
+    <p>&copy; 2024 Aphantocosm. All rights reserved... ALL.</p>
+  </footer>
+  <script>
+    class Grain {
+      constructor(el) {
+        /**
+         * Options
+         * Increase the pattern size if visible pattern
+         */
+        this.patternSize = 100;
+        this.patternScaleX = 1;
+        this.patternScaleY = 1;
+        this.patternRefreshInterval = 3;
+        this.patternAlpha = 255; // Maximum alpha value to make grains as dark as possible
+    
+        /**
+         * Create canvas
+         */
+        this.canvas = el;
+        this.ctx = this.canvas.getContext('2d');
+        this.ctx.scale(this.patternScaleX, this.patternScaleY);
+    
+        /**
+         * Create a canvas that will be used to generate grain and used as a
+         * pattern on the main canvas.
+         */
+        this.patternCanvas = document.createElement('canvas');
+        this.patternCanvas.width = this.patternSize;
+        this.patternCanvas.height = this.patternSize;
+        this.patternCtx = this.patternCanvas.getContext('2d');
+        this.patternData = this.patternCtx.createImageData(this.patternSize, this.patternSize);
+        this.patternPixelDataLength = this.patternSize * this.patternSize * 4; // rgba = 4
+    
+        /**
+         * Prebind prototype function, so later its easier to user
+         */
+        this.resize = this.resize.bind(this);
+        this.loop = this.loop.bind(this);
+    
+        this.frame = 0;
+    
+        window.addEventListener('resize', this.resize);
+        this.resize();
+    
+        window.requestAnimationFrame(this.loop);
+      }
+    
+      resize() {
+        this.canvas.width = window.innerWidth * devicePixelRatio;
+        this.canvas.height = window.innerHeight * devicePixelRatio;
+      }
+    
+      update() {
+        const { patternPixelDataLength, patternData, patternAlpha, patternCtx } = this;
+        // put a random shade of gray into every pixel of the pattern
+        for (let i = 0; i < patternPixelDataLength; i += 4) {
+        const value = Math.random() * 20; // Extremely dark grains
+
+        patternData.data[i] = value;
+        patternData.data[i + 1] = value;
+        patternData.data[i + 2] = value;
+        patternData.data[i + 3] = patternAlpha;
+        }
+            
+        patternCtx.putImageData(patternData, 0, 0);
+      }
+    
+      draw() {
+        const { ctx, patternCanvas, canvas } = this;
+        const { width, height } = canvas;
+    
+        // clear canvas
+        ctx.clearRect(0, 0, width, height);
+    
+        // fill the canvas using the pattern
+        ctx.fillStyle = ctx.createPattern(patternCanvas, 'repeat');
+        ctx.fillRect(0, 0, width, height);
+      }
+    
+      loop() {
+        // only update grain every n frames
+        const shouldDraw = ++this.frame % this.patternRefreshInterval === 0;
+        if (shouldDraw) {
+          this.update();
+          this.draw();
+        }
+    
+        window.requestAnimationFrame(this.loop);
+      }
+    }
+    
+    /**
+     * Initiate Grain
+     */
+    const el = document.querySelector('.grain');
+    const grain = new Grain(el);
+    
+    (function() {
+      var COLORS, Confetti, NUM_CONFETTI, PI_2, canvas, context, resizeWindow;
+    
+      NUM_CONFETTI = 350;
+    
+      COLORS = [[85, 71, 106], [174, 61, 99], [219, 56, 83], [244, 92, 68], [248, 182, 70]];
+    
+      PI_2 = 2 * Math.PI;
+    
+      canvas = document.getElementById("world");
+    
+      context = canvas.getContext("2d");
+    
+      window.w = 0;
+    
+      window.h = 0;
+    
+      canvasResize = function() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      };
+    
+      resizeWindow = function() {
+        canvasResize();
+        window.h = canvas.height = window.innerHeight;
+      };
+    
+      window.addEventListener('resize', resizeWindow, false);
+    
+      window.onload = function() {
+        return setTimeout(resizeWindow, 0);
+      };
+    }).call(this);
+  </script>
+    
+        
+</body>
+</html>

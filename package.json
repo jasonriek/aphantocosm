@@ -1,0 +1,38 @@
+{
+  "name": "aphantocosm",
+  "version": "1.0.0",
+  "description": "A website about UFOS, Aliens, and related content.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/jasonriek/aphantocosm.git"
+  },
+  "keywords": [
+    "UFO",
+    "Alien",
+    "paranormal"
+  ],
+  "author": "Jason Reek",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jasonriek/aphantocosm/issues"
+  },
+  "homepage": "https://github.com/jasonriek/aphantocosm#readme",
+  "dependencies": {
+    "authenticate-pam": "^1.0.5",
+    "body-parser": "^1.20.2",
+    "connect-mongo": "^5.1.0",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "express-validator": "^7.1.0",
+    "moment": "^2.30.1",
+    "moment-timezone": "^0.5.45",
+    "mongoose": "^8.4.1",
+    "multer": "^1.4.5-lts.1",
+    "pm2": "^5.4.0"
+  }
+}
